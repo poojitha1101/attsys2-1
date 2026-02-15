@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../../styles/teacher/TeacherDash.css";
 
 const TeacherDash = () => {
   const navigate = useNavigate();
-
   const { id } = useParams();
-  const [subject, setSubject] = useState("Loading...");
-  const [sections, setSections] = useState([]);
+  
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -16,52 +15,63 @@ const TeacherDash = () => {
 
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_URL}:5000/api/profile/${id}`,
+          `${import.meta.env.VITE_URL}:5000/api/profile/${id}`
         );
         const data = await response.json();
 
         if (response.ok) {
-          setSubject(data.USNSubject);
-          setSections(data.sections);
+          setCourses(data.courses || []);
         } else {
           console.error("Profile fetch error:", data.error);
         }
       } catch (error) {
         console.error("Connection error fetching profile:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchUserProfile();
   }, [id]);
 
+  if (loading) return <div className="TeacherDash">Loading Dashboard...</div>;
+
   return (
-    <>
-      <div className="TeacherDash">
-        <div className="dashboard-container">
-          <span className="dash-section">SUBJECTS</span>
-          <div className="subjects">
-            <div className="subject">
-              <h2 className="subject-title">{subject}</h2>
-              <div className="section-grid">
-                {sections && sections.length > 0 ? (
-                  sections.map((sec, index) => (
-                    <button
-                      key={index}
-                      className="attendance-btn"
-                      onClick={() => navigate(`/attendance/${sec}`)}
-                    >
-                      Section {sec}
-                    </button>
-                  ))
-                ) : (
-                  <p>No sections found for this teacher.</p>
-                )}
+    <div className="TeacherDash">
+      <div className="dashboard-container">
+        <span className="dash-section">SUBJECTS</span>
+        
+        <div className="subjects">
+          {courses.length > 0 ? (
+            courses.map((course, courseIndex) => (
+              <div className="subject" key={courseIndex}>
+                <h2 className="subject-title">{course.subject}</h2>
+                
+                <div className="section-grid">
+                  {course.sections && course.sections.length > 0 ? (
+                    course.sections.map((sec, secIndex) => (
+                      <button
+                        key={secIndex}
+                        className="attendance-btn"
+                        onClick={() => navigate(`/attendance/${course.subject}/${sec}`)}
+                      >
+                        Section {sec}
+                      </button>
+                    ))
+                  ) : (
+                    <p>No sections assigned</p>
+                  )}
+                </div>
               </div>
+            ))
+          ) : (
+            <div className="no-data">
+              <p>No subjects found. Please complete your onboarding.</p>
             </div>
-          </div>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

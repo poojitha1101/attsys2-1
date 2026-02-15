@@ -1,15 +1,43 @@
 import "../styles/OnBoarding.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
 
 const OnBoarding = ({ type }) => {
   const [name, setName] = useState("");
-  const [USNSubject, setUSNSubject] = useState("");
-  const [section, setSection] = useState("");
+  const [usn, setUsn] = useState("");
+  const [subjectCount, setSubjectCount] = useState(null);
+  const [courseLoads, setCourseLoads] = useState([
+    { subject: "", sections: "" },
+  ]);
+
+  const [studentSection, setStudentSection] = useState("");
+
   const navigate = useNavigate();
   const { user, setUser } = useAuth();
+
+  const handleSubjectCountChange = (e) => {
+    const newCount = Math.max(1, parseInt(e.target.value) || 1);
+    setSubjectCount(newCount);
+
+    setCourseLoads((prev) => {
+      if (newCount > prev.length) {
+        const extraRows = Array(newCount - prev.length).fill({
+          subject: "",
+          sections: "",
+        });
+        return [...prev, ...extraRows];
+      } else {
+        return prev.slice(0, newCount);
+      }
+    });
+  };
+
+  const handleCourseChange = (index, field, value) => {
+    const updatedLoads = [...courseLoads];
+    updatedLoads[index][field] = value;
+    setCourseLoads(updatedLoads);
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -22,8 +50,17 @@ const OnBoarding = ({ type }) => {
       return;
     }
 
-    const sectionsArr =
-      type === "teacher" ? section.trim().split(/\s+/) : [section];
+    const payload = {
+      name,
+      ...(type === "student"
+        ? { usn, sections: [studentSection] }
+        : {
+          courses: courseLoads.map((c) => ({
+            subject: c.subject,
+            sections: c.sections.trim().split(/\s+/),
+          })),
+        }),
+    };
 
     try {
       const response = await fetch(
@@ -34,11 +71,7 @@ const OnBoarding = ({ type }) => {
             "Content-Type": "application/json",
             ...(token && { Authorization: `Bearer ${token}` }),
           },
-          body: JSON.stringify({
-            name,
-            USNSubject,
-            sections: sectionsArr,
-          }),
+          body: JSON.stringify(payload),
         },
       );
 
@@ -46,12 +79,10 @@ const OnBoarding = ({ type }) => {
 
       if (response.ok) {
         localStorage.removeItem("onboardingUserId");
-
         if (user) {
           localStorage.setItem("isOnboarded", "true");
           setUser({ ...user, isOnboarded: true });
-          const target = user.role === "student" ? "/qrscanner" : "/dash";
-          navigate(target);
+          navigate(user.role === "student" ? "/qrscanner" : "/dash");
         } else {
           alert("Profile Setup Complete! Please Login.");
           navigate(`/login/${type}`);
@@ -65,64 +96,93 @@ const OnBoarding = ({ type }) => {
   }
 
   return (
-    <>
-      <div className="Form blue-background">
-        <div className="greetings">
-          <h1>Welcome on Board</h1>
-          <p>To get started, Please fill in your personal information.</p>
-        </div>
-        <Link className="logo" to="/">
-          ATTSYS2-0
-        </Link>
-        <form className="form personal-info" onSubmit={handleSubmit}>
-          <h1>Personal Info</h1>
-          <div className="input-holder input-holder-info">
-            <input
-              placeholder="Name"
-              type="text"
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <input
-              placeholder={type == "student" ? "USN" : "Subject"}
-              type="text"
-              required
-              value={USNSubject}
-              onChange={(e) => setUSNSubject(e.target.value)}
-            />
-            <input
-              placeholder={type === "student" ? "Section" : "Sections"}
-              type="text"
-              required
-              value={section}
-              onChange={(e) => {
-                let value = e.target.value;
-
-                if (type === "student") {
-                  value = value.replace(/\s+/g, "");
-                }
-
-                setSection(value);
-              }}
-            />
-          </div>
-          <div className="button-holder">
-            <button
-              type="reset"
-              onClick={() => {
-                setName("");
-                setUSNSubject("");
-                setSection("");
-              }}
-            >
-              Clear
-            </button>
-            <button type="submit">Log In</button>
-          </div>
-        </form>
+    <div className="Form blue-background">
+      <div className="greetings">
+        <h1>Welcome on Board</h1>
+        <p>To get started, Please fill in your personal information.</p>
       </div>
-    </>
+      <Link className="logo" to="/">
+        ATTSYS2-0
+      </Link>
+
+      <form className="form personal-info" onSubmit={handleSubmit}>
+        <h1>Personal Info</h1>
+        <div className="input-holder input-holder-info">
+          <input
+            placeholder="Full Name"
+            type="text"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          {type === "student" ? (
+            <>
+              <input
+                placeholder="USN"
+                type="text"
+                required
+                value={usn}
+                onChange={(e) => setUsn(e.target.value)}
+              />
+              <input
+                placeholder="Section"
+                type="text"
+                required
+                value={studentSection}
+                onChange={(e) =>
+                  setStudentSection(e.target.value.replace(/\s+/g, ""))
+                }
+              />
+            </>
+          ) : (
+            <>
+              <input
+                type="number"
+                min="1"
+                max="10"
+                  placeholder="How many subjects are you handling (e.g. 2)"
+                value={subjectCount}
+                onChange={handleSubjectCountChange}
+              />
+
+              <div className="dynamic-inputs">
+                {courseLoads.map((course, index) => (
+                  <div
+                    key={index}
+                    className="course-row"
+                  >
+                    <input
+                      placeholder={`Subject ${index + 1}`}
+                      required
+                      value={course.subject}
+                      onChange={(e) =>
+                        handleCourseChange(index, "subject", e.target.value)
+                      }
+                    />
+                    <input
+                      placeholder="Sections (e.g. A B C)"
+                      required
+                      value={course.sections}
+                      onChange={(e) =>
+                        handleCourseChange(index, "sections", e.target.value)
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        <div className="button-holder">
+          <button type="button" onClick={() => window.location.reload()}>
+            Clear
+          </button>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
   );
 };
 

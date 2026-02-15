@@ -15,7 +15,7 @@ function QRScanner() {
       qrbox: { width: 200, height: 200 },
       aspectRatio: 1.0,
       supportedScanTypes: [0],
-      rememberLastUsedCamera: false,
+      rememberLastUsedCamera: true,
     });
 
     const onScanSuccess = async (decodedText) => {
@@ -58,10 +58,10 @@ function QRScanner() {
   return (
     <div className="qrscanner-container">
       <h2 className="qrscanner-title">Scan Attendance</h2>
-      
       <div className="scanner-wrapper">
         <div id="qr-reader"></div>
       </div>
+      <b>* Select the correct camera carefully — your choice will be saved and used for future scans.</b>
       
       <div className="status-box">
         {scanResult ? (

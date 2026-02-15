@@ -16,20 +16,27 @@ mongoose.connect(mongoURI)
   .catch(err => console.error("❌ DB Connection Error:", err));
 
 const sessionSchema = new mongoose.Schema({
-  passkey: { type: String, required: true, unique: true },
-  teacherId: { type: String, required: true },
+  passkey: { type: String, required: true },
+  teacherId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "User", 
+    required: true 
+  },
+  subject: { type: String, required: true },
   section: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now, expires: 10 }
+  expiresAt: { type: Data, required: true }
 });
+
+sessionSchema.index({expiresAt: 1}, { expireAfterSeconds: 0 });
 
 const Session = mongoose.models.Session || mongoose.model("Session", sessionSchema);
 
 app.get("/qr", async (req, res) => {
   try {
-    const { teacherId, section } = req.query;
+    const { teacherId, section, subject } = req.query;
 
-    if (!teacherId || !section) {
-      return res.status(400).send("Missing teacherId or section");
+    if (!teacherId || !section || !subject) {
+      return res.status(400).send("Missing teacherId, section, or subject");
     }
 
     const passkey = crypto.randomBytes(16).toString("hex");
@@ -37,13 +44,15 @@ app.get("/qr", async (req, res) => {
     await Session.create({
       passkey,
       teacherId,
-      section
+      subject,
+      section,
+      expiresAt: new Date(Date.now() + 60 * 1000)
     });
 
     res.setHeader("Content-Type", "image/png");
     await qrcode.toFileStream(res, passkey);
     
-    console.log(`Successfully generated QR for: ${teacherId}`);
+    console.log(`Successfully generated QR for: ${teacherId} - ${subject}`);
   } catch (err) {
     console.error("Internal Server Error Detail:", err);
     res.status(500).send(err.message);

@@ -14,33 +14,44 @@ router.post("/verify", async (req, res) => {
       return res.status(400).json({ error: "Invalid or expired QR code" });
     }
 
+    if(new Date() > activeSession.expiresAt) {
+      return res.status(410).json({ error: "QR Code has expired!" });
+    }
+
     const student = await User.findById(studentId);
-    if(!student){
+    if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
 
     const isCorrectSection = student.sections.includes(activeSession.section);
-
-    if(!isCorrectSection){
+    if (!isCorrectSection) {
       return res.status(403).json({
-        error: `Access denied: You belong to section ${student.sections.join(", ")}, but this QR is for section ${activeSession.section}.`
+        error: `Access denied: This QR is for section ${activeSession.section}.`
       });
     }
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     const alreadyMarked = await Attendance.findOne({
       studentId,
-      teacherId: activeSession.teacherId,
+      subject: activeSession.subject, 
+      date: { $gte: today }
     });
 
     if (alreadyMarked) {
-      return res.status(400).json({ error: "Attendance already recorded for this session" });
+      return res.status(400).json({ error: "Attendance already recorded for this subject today" });
     }
 
     await Attendance.create({
       studentId,
+      usn: student.usn,        
+      studentName: student.name,
       teacherId: activeSession.teacherId,
+      subject: activeSession.subject, 
       section: activeSession.section,
-      status: "Present"
+      status: "Present",
+      date: new Date()
     });
 
     res.status(200).json({ message: "Attendance marked successfully!" });
@@ -50,23 +61,28 @@ router.post("/verify", async (req, res) => {
   }
 });
 
-router.get("/list/:teacherId/:section", async (req, res) => {
+router.get("/list/:teacherId/:subject/:section", async (req, res) => {
   try {
-    const { teacherId, section } = req.params;
+    const { teacherId, subject, section } = req.params;
 
-    const records = await Attendance.find({ teacherId, section })
-      .populate("studentId", "name USNSubject")
-      .sort({ date: -1 });
+    const records = await Attendance.find({ 
+      teacherId, 
+      subject, 
+      section,
+      date: { $gte: new Date().setHours(0, 0, 0, 0) } 
+    })
+    .sort({ usn: 1 });
 
     const formattedData = records.map((rec, index) => ({
       Sno: (index + 1).toString().padStart(2, '0'),
-      Name: rec.studentId?.name || "Unknown Student",
-      USN: rec.studentId?.USNSubject || "N/A", 
+      Name: rec.studentName || "N/A", 
+      USN: rec.usn || "N/A", 
       Status: rec.status || "Present"
     }));
 
     res.status(200).json(formattedData);
   } catch (err) {
+    console.error("Fetch List Error:", err);
     res.status(500).json({ error: "Failed to fetch list" });
   }
 });
