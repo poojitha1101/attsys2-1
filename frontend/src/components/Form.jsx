@@ -16,7 +16,7 @@ const Form = ({ formType, type }) => {
 
     try {
       console.log(import.meta.env.VITE_URL);
-      const response = await fetch(`${import.meta.env.VITE_URL}:5000/api${endpoint}`, {
+      const response = await fetch(`${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/api${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, role: type }),

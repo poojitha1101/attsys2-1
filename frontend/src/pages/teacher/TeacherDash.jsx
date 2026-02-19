@@ -15,7 +15,7 @@ const TeacherDash = () => {
 
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_URL}:5000/api/profile/${id}`
+          `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/api/profile/${id}`
         );
         const data = await response.json();
 

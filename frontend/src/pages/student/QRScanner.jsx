@@ -23,7 +23,7 @@ function QRScanner() {
       setScanResult(decodedText);
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_URL}:5000/api/attendance/verify`, {
+        const response = await fetch(`${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/api/attendance/verify`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

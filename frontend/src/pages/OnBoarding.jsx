@@ -64,7 +64,7 @@ const OnBoarding = ({ type }) => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_URL}:5000/api/onboarding/${idToUpdate}`,
+        `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/api/onboarding/${idToUpdate}`,
         {
           method: "PATCH",
           headers: {

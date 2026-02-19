@@ -15,7 +15,7 @@ const AttendancePage = () => {
   const [qr, setQr] = useState(null);
   const [attendanceList, setAttendanceList] = useState([]);
   const [timeLeft, setTimeLeft] = useState(0);
-  
+
   const timerIdRef = useRef(null);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const AttendancePage = () => {
       if (user?.role === "teacher" && user?.id && sectionName && subjectName) {
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_URL}:5000/api/attendance/list/${user.id}/${subjectName}/${sectionName}`
+            `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/api/attendance/list/${user.id}/${subjectName}/${sectionName}`,
           );
           if (response.ok) {
             const data = await response.json();
@@ -43,7 +43,7 @@ const AttendancePage = () => {
   const generateQR = () => {
     if (timerIdRef.current) clearInterval(timerIdRef.current);
 
-    const baseUrl = `${import.meta.env.VITE_URL}:5001/qr`;
+    const baseUrl = `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/qr`;
     const params = `teacherId=${user.id}&subject=${subjectName}&section=${sectionName}&time=${Date.now()}`;
 
     setQr(`${baseUrl}?${params}`);
@@ -83,7 +83,9 @@ const AttendancePage = () => {
       theme: "grid",
       headStyles: { fillColor: [41, 128, 185] },
     });
-    doc.save(`${subjectName}_${sectionName}_${new Date().toLocaleDateString()}.pdf`);
+    doc.save(
+      `${subjectName}_${sectionName}_${new Date().toLocaleDateString()}.pdf`,
+    );
   };
 
   return (
