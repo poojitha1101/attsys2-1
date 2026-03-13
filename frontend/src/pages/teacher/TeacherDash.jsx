@@ -14,8 +14,11 @@ const TeacherDash = () => {
       if (!id) return;
 
       try {
+          const API_BASE_URL = import.meta.env.VITE_PORT
+            ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
+            : import.meta.env.VITE_URL;
         const response = await fetch(
-          `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/api/profile/${id}`
+          `${API_BASE_URL}/api/profile/${id}`
         );
         const data = await response.json();
 

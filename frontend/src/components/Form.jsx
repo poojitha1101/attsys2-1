@@ -15,8 +15,11 @@ const Form = ({ formType, type }) => {
     const endpoint = formType === "Log In" ? "/login" : "/register";
 
     try {
-      console.log(import.meta.env.VITE_URL);
-      const response = await fetch(`${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/api${endpoint}`, {
+      const API_BASE_URL =
+        import.meta.env.VITE_PORT && import.meta.env.VITE_PORT != "undefined"
+          ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
+          : import.meta.env.VITE_URL;
+      const response = await fetch(`${API_BASE_URL}/api${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, role: type }),

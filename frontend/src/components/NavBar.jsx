@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
 import ProfilePic from "../assets/profile.svg";
@@ -7,19 +7,22 @@ import "../styles/NavBar.css";
 const NavBar = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const id = user.id;
+  const id = user?.id;
 
   const [userName, setUserName] = useState("Loading...");
   const [showLogout, setShowLogout] = useState(false);
+
+  const menuRef = useRef(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!id) return;
 
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/api/profile/${id}`,
-        );
+        const API_BASE_URL = import.meta.env.VITE_PORT
+          ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
+          : import.meta.env.VITE_URL;
+        const response = await fetch(`${API_BASE_URL}/api/profile/${id}`);
         const data = await response.json();
 
         if (response.ok) {
@@ -36,6 +39,24 @@ const NavBar = () => {
 
     fetchUserProfile();
   }, [id]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        showLogout &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setShowLogout(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showLogout]);
 
   function handleLogOut() {
     logout();
@@ -58,21 +79,27 @@ const NavBar = () => {
         AttSys2-0
       </div>
 
-      <img
-        src={ProfilePic}
-        onClick={toggleLogout}
-        style={{ cursor: "pointer" }}
-        alt="Profile"
-      />
+      <div
+        className="profile-wrapper"
+        ref={menuRef}
+        style={{ position: "relative" }}
+      >
+        <img
+          src={ProfilePic}
+          style={{ cursor: "pointer" }}
+          alt="Profile"
+          onClick={toggleLogout}
+        />
 
-      {showLogout && (
-        <div id="nav-menu">
-          <p>Hi, {userName}</p>
-          <button id="logout" onClick={handleLogOut}>
-            Logout
-          </button>
-        </div>
-      )}
+        {showLogout && (
+          <div id="nav-menu">
+            <p>Hi, {userName}</p>
+            <button id="logout" onClick={handleLogOut}>
+              Logout
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

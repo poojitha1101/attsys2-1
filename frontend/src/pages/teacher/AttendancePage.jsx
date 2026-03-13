@@ -9,6 +9,9 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
 const AttendancePage = () => {
+  const API_BASE_URL = import.meta.env.VITE_PORT
+    ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
+    : import.meta.env.VITE_URL;
   const { user } = useAuth();
   const { subject: subjectName, sectionName } = useParams();
 
@@ -23,7 +26,7 @@ const AttendancePage = () => {
       if (user?.role === "teacher" && user?.id && sectionName && subjectName) {
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/api/attendance/list/${user.id}/${subjectName}/${sectionName}`,
+            `${API_BASE_URL}/api/attendance/list/${user.id}/${subjectName}/${sectionName}`,
           );
           if (response.ok) {
             const data = await response.json();
@@ -38,12 +41,12 @@ const AttendancePage = () => {
     const interval = setInterval(fetchAttendance, 5000);
     fetchAttendance();
     return () => clearInterval(interval);
-  }, [user, sectionName, subjectName]);
+  }, [user, sectionName, subjectName, API_BASE_URL]);
 
   const generateQR = () => {
     if (timerIdRef.current) clearInterval(timerIdRef.current);
 
-    const baseUrl = `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/qr`;
+    const baseUrl = `${API_BASE_URL}/qr`;
     const params = `teacherId=${user.id}&subject=${subjectName}&section=${sectionName}&time=${Date.now()}`;
 
     setQr(`${baseUrl}?${params}`);
@@ -75,14 +78,40 @@ const AttendancePage = () => {
 
   const downloadPDF = () => {
     if (!attendanceList || attendanceList.length === 0) return;
+
     const doc = new jsPDF("p", "pt", "a4");
-    doc.text(`${subjectName} - Section ${sectionName}`, 40, 30);
+
+    // Title and Date
+    doc.setFontSize(16);
+    doc.text(`${subjectName} - Section ${sectionName}`, 40, 40);
+    doc.setFontSize(10);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 40, 60);
+
     autoTable(doc, {
       body: attendanceList,
-      startY: 50,
+      startY: 80,
       theme: "grid",
       headStyles: { fillColor: [41, 128, 185] },
+
+      // 1. Define specific widths for columns
+      columnStyles: {
+        0: { cellWidth: 40 }, // S.No (narrow)
+        1: { cellWidth: 200 }, // Name (wide)
+        2: { cellWidth: 100 }, // USN
+        3: { cellWidth: "auto" }, // Status (takes remaining space)
+      },
+
+      // 2. Keep your red color logic for absent students
+      didParseCell: (data) => {
+        if (data.section === "body") {
+          const rowData = data.row.raw;
+          if (rowData.Status !== "Present") {
+            data.cell.styles.textColor = [255, 0, 0];
+          }
+        }
+      },
     });
+
     doc.save(
       `${subjectName}_${sectionName}_${new Date().toLocaleDateString()}.pdf`,
     );

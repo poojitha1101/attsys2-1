@@ -48,7 +48,7 @@
 #nav-menu {
   position: absolute;
   top: 11vmin;
-  right: 4vmin;
+  right: -1vmin;
   background: #fff;
   border: 0.4vmin solid #000;
   box-shadow: 1vmin 1vmin 0px #000;
@@ -99,20 +99,20 @@
 
   #nav-menu {
     top: 14vmin;
-    right: 5vmin;
-    width: calc(100% - 10vmin);
+    right: -1vmin;
+    width: max-content;
     padding: 6vmin;
     gap: 4vmin;
   }
 
   #nav-menu p {
-    font-size: 6vmin;
+    font-size: 4vmin;
     border-bottom-width: 0.4vmin;
   }
 
   #logout {
-    font-size: 5.5vmin;
-    padding: 4vmin;
+    font-size: 3.5vmin;
+    padding: 2vmin;
     box-shadow: 1vmin 1vmin 0px #000;
   }
 }

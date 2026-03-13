@@ -63,8 +63,11 @@ const OnBoarding = ({ type }) => {
     };
 
     try {
+          const API_BASE_URL = import.meta.env.VITE_PORT
+            ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
+            : import.meta.env.VITE_URL;
       const response = await fetch(
-        `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/api/onboarding/${idToUpdate}`,
+        `${API_BASE_URL}/api/onboarding/${idToUpdate}`,
         {
           method: "PATCH",
           headers: {

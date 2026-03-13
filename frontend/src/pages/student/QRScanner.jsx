@@ -19,11 +19,14 @@ function QRScanner() {
     });
 
     const onScanSuccess = async (decodedText) => {
-      scanner.clear(); 
+      scanner.clear();
       setScanResult(decodedText);
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}/api/attendance/verify`, {
+        const API_BASE_URL = import.meta.env.VITE_PORT
+          ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
+          : import.meta.env.VITE_URL;
+        const response = await fetch(`${API_BASE_URL}/api/attendance/verify`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -39,7 +42,7 @@ function QRScanner() {
           navigate("/");
         } else {
           alert(data.error || "Verification failed");
-          window.location.reload(); 
+          window.location.reload();
         }
       } catch (err) {
         console.error("Verification Error:", err);
@@ -47,8 +50,7 @@ function QRScanner() {
       }
     };
 
-    scanner.render(onScanSuccess, () => {
-    });
+    scanner.render(onScanSuccess, () => { });
 
     return () => {
       scanner.clear().catch((e) => console.warn("Cleanup error", e));
@@ -61,8 +63,11 @@ function QRScanner() {
       <div className="scanner-wrapper">
         <div id="qr-reader"></div>
       </div>
-      <b>* Select the correct camera carefully — your choice will be saved and used for future scans.</b>
-      
+      <b>
+        * Select the correct camera carefully — your choice will be saved and
+        used for future scans.
+      </b>
+
       <div className="status-box">
         {scanResult ? (
           <p className="success-msg">Processing Code...</p>

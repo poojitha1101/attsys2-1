@@ -86,7 +86,13 @@ router.get("/list/:teacherId/:subject/:section", async (req, res) => {
       };
     });
 
-    combinedData.sort((a, b) => a.Status.localeCompare(b.Status));
+    // --- SORTING LOGIC CHANGED HERE ---
+    // Sort by USN alphabetically/numerically
+    combinedData.sort((a, b) => a.USN.localeCompare(b.USN, undefined, {
+      numeric: true,      // Handles 10 being after 2
+      sensitivity: 'base' // Ignores case
+    }));
+    // ----------------------------------
 
     const finalFormattedData = combinedData.map((item, index) => ({
       Sno: (index + 1).toString().padStart(2, '0'),
