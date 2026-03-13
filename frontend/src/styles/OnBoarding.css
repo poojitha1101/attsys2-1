@@ -1,61 +1,152 @@
+.logo {
+  font-family: var(--font-display);
+  font-size: 4.8vmin;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  -webkit-text-stroke: 0.15vmin #000;
+  text-shadow: 0.4vmin 0.4vmin 0px #000;
+  margin-bottom: 3vmin;
+  transition: transform 0.2s ease;
+}
+
+.logo:hover {
+  transform: rotate(-2deg) scale(1.05);
+}
+
 .greetings {
-  height: 100%;
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: #7ed957;
-  color: var(--primary-color);
-  font-family: "Lilita One";
-  border-radius: 1.5rem;
-  padding-inline: 1rem;
+  text-align: center;
+  margin-bottom: 4vmin;
+  max-width: 70vmin;
 }
 
 .greetings h1 {
-  font-size: 2.5rem;
+  font-family: var(--font-display);
+  font-size: 5.6vmin;
+  color: #fff;
+  line-height: 0.9;
+  text-shadow: 0.5vmin 0.5vmin 0px #000;
+  margin-bottom: 2vmin;
 }
 
 .greetings p {
-  font-size: 1.5rem;
+  font-family: var(--font-main);
+  font-weight: 700;
+  color: #000;
+  background: #fff;
+  display: inline-block;
+  padding: 0.8vmin 2vmin;
+  border: 0.3vmin solid #000;
+  font-size: 1.8vmin;
 }
 
-#sections {
-  color: black;
+.form.personal-info {
+  background: #fff;
+  border: 0.4vmin solid #000;
+  box-shadow: 1.2vmin 1.2vmin 0px #000;
+  padding: 5vmin;
+  width: 100%;
+  max-width: 65vmin;
+  box-sizing: border-box;
+  height: auto;
 }
 
-.dynamic-inputs{
-  width: 85%;
+.form.personal-info h1 {
+  font-family: var(--font-display);
+  font-size: 4.5vmin;
+  text-align: left;
+  margin-bottom: 3vmin;
+  border-bottom: 0.4vmin solid #000;
+  padding-bottom: 1.5vmin;
 }
 
-.course-row{
+.input-holder-info {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 2vmin;
+}
+
+input {
+  font-family: var(--font-main);
+  font-weight: 600;
+  border: 0.3vmin solid #000;
+  border-radius: 0;
+  padding: 2vmin;
+  background: #fff;
+  font-size: 1.8vmin;
+  transition: all 0.1s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus {
+  transform: translate(-0.3vmin, -0.3vmin);
+  box-shadow: 0.5vmin 0.5vmin 0px #000;
+  outline: none;
+}
+
+.dynamic-inputs {
+  margin-top: 3vmin;
+  max-height: none; 
+  overflow: visible; 
+  display: flex;
+  flex-direction: column;
+  gap: 2vmin;
   width: 100%;
 }
 
-.input-holder-info input {
-  width: 80%;
+.course-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2vmin;
+  padding: 2.5vmin;
+  background: #ffde03;
+  border: 0.3vmin solid #000;
+  box-shadow: 0.5vmin 0.5vmin 0px #000;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.button-holder {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5vmin;
+  margin-top: 4vmin;
 }
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
+.button-holder button {
+  font-family: var(--font-display);
+  font-size: 2.8vmin;
+  text-transform: uppercase;
+  padding: 2vmin;
+  border: 0.3vmin solid #000;
+  box-shadow: 0.6vmin 0.6vmin 0px #000;
+  cursor: pointer;
 }
+.button-holder button[type="submit"] { background: var(--success); color: #000; }
+.button-holder button[type="button"] { background: var(--error); color: #fff; }
 
-@media (max-width: 1024px) {
-  .greetings {
-    display: none;
+@media (max-width: 60vmin) or (orientation: portrait) {
+  .Form.blue-background {
+    padding-top: 18vmin;
   }
-}
+  .logo { font-size: 8vmin; }
+  .greetings h1 { font-size: 11vmin; }
+  .greetings p { font-size: 4vmin; padding: 1.5vmin 3vmin; }
 
-.personal-info h1{
-  font-size: 10vmin;
+  .form.personal-info {
+    max-width: 92vmin;
+    padding: 6vmin;
+  }
+
+  .course-row {
+    grid-template-columns: 1fr; 
+    width: 100%;
+  }
+
+  input {
+    font-size: 5vmin;
+    padding: 4vmin;
+    width: 100%;
+  }
 }

@@ -1,69 +1,95 @@
-.background{
-  position: absolute;
-  z-index: 0;
-  background: white;
-  height: 100dvh;
-  width: 100dvw;
-}
-
-#blur-one, #blur-two{
-  position: absolute;
-  background: radial-gradient(circle, #c1ff72, #c1ff72, transparent);
-  height: 45rem;
-  aspect-ratio: 1/1;
+.LandingPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2vmin;
+  background-color: #f0f0f0;
   overflow: hidden;
+  position: relative;
 }
 
-#blur-one{
-  top: 0dvh;
-  left: 0dvh;
+.LandingPage h1 {
+  font-family: var(--font-display);
+  font-size: 15vmin;
+  color: #000;
+  text-transform: uppercase;
+  line-height: 0.8;
+  letter-spacing: -0.2vmin;
+  margin-bottom: 4vmin;
+  -webkit-text-stroke: 0.2vmin #000;
+  text-shadow: 0.8vmin 0.8vmin 0px var(--primary-blue);
+  text-align: center;
 }
 
-#blur-two{
-  bottom: 0dvh;
-  right: 0dvh;
+.LandingPage .button-holder {
+  display: flex;
+  gap: 2vmin;
 }
 
-.blue-background{
-  position:absolute;
+.LandingPage .btn {
+  font-family: var(--font-display);
+  font-size: 3.2vmin;
+  text-transform: uppercase;
+  color: #000;
+  background: #fff;
+  padding: 2vmin 4vmin;
+  border: 0.4vmin solid #000;
+  box-shadow: 0.8vmin 0.8vmin 0px #000;
+  transition: all 0.1s;
+  text-decoration: none;
+  text-align: center;
+}
+
+.LandingPage .btn:hover {
+  transform: translate(-0.4vmin, -0.4vmin);
+  box-shadow: 1.2vmin 1.2vmin 0px #000;
+  background-color: var(--primary-blue);
+  color: #fff;
+}
+
+.LandingPage .btn:active {
+  transform: translate(0.4vmin, 0.4vmin);
+  box-shadow: 0px 0px 0px #000;
+}
+
+.background {
+  position: fixed;
+  font-family: var(--font-display);
+  font-size: 40vmin;
+  color: rgba(0, 0, 0, 0.03);
+  z-index: -1;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
   top: 50%;
   left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  height: 80dvh;
-  width: 90dvw;
-  background-color: var(--primary-color);
-  display: flex;
-  border-radius: 1.5rem;
+  transform: translate(-50%, -50%);
 }
 
-.LandingPage{
-  align-items: center;
-  justify-content: space-evenly;
-  flex-direction: column;
-  gap: 2.5rem;
-  z-index: 2;
+.background::after {
+  content: "ATTENDANCE";
 }
 
-.LandingPage h1{
-  margin-block: 0;
-  font-size: 15vmin;
-  font-family: 'Impact';
-  letter-spacing: 0.25rem;
-  color: white;
-}
+@media (max-width: 60vmin) or (orientation: portrait) {
+  .LandingPage h1 {
+    font-size: 18vmin;
+    margin-bottom: 8vmin;
+    -webkit-text-stroke: 0.4vmin #000;
+    text-shadow: 1.2vmin 1.2vmin 0px var(--primary-blue);
+  }
 
-.LandingPage .button-holder{
-  letter-spacing: 0.1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2.5vh;
-}
+  .LandingPage .button-holder {
+    flex-direction: column;
+    width: 85vmin;
+    gap: 4vmin;
+  }
 
-.LandingPage .btn{
-  transition: background-color 250ms linear;
-  font-size: 5vmin;
-}
-
-.LandingPage .btn:hover{
-  background-color: #c1ff72;
+  .LandingPage .btn {
+    font-size: 8vmin;
+    padding: 5vmin;
+    border-width: 0.6vmin;
+    box-shadow: 1.5vmin 1.5vmin 0px #000;
+  }
 }

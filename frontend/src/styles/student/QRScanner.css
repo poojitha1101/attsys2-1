@@ -1,130 +1,123 @@
 .qrscanner-container {
+  padding-top: 8vmin;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: calc(100dvh - 3.5rem);
-  color: black;
-  font-family: 'Inter', sans-serif;
+  max-width: 95%;
+  margin: 0 auto;
 }
 
 .qrscanner-title {
-  color: var(--primary-color);
-  font-size: 10vmin;
-  font-family: "Lilita One";
-  margin-block: 0px;
-  letter-spacing: 0.5px;
+  font-family: var(--font-display);
+  font-size: 6vmin; 
+  text-transform: uppercase;
+  line-height: 0.9;
+  text-align: center;
+  margin-bottom: 3vmin;
+  background: #ffde03;
+  padding: 1vmin 2vmin;
+  border: 0.4vmin solid #000;
+  box-shadow: 0.8vmin 0.8vmin 0px #000;
 }
 
 .scanner-wrapper {
+  background: #fff;
+  border: 0.4vmin solid #000;
+  box-shadow: 1.5vmin 1.5vmin 0px #000;
+  padding: 2vmin;
+  margin-bottom: 2vmin;
   position: relative;
-  width: 80%;
-  max-width: 350px;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: 24px;
-  border: 4px solid #3b82f6;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-}
-
-.qrscanner-container b{
-  margin-top: 3vmin;
-  width: 85%;
+  min-width: 45%;
 }
 
 #qr-reader {
   border: none !important;
+  background: #000;
+  width:100%;
+  aspect-ratio: 1/1;
 }
 
-#qr-reader__dashboard_section_csr {
+#qr-reader__scan_region {
+  background: #000;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 15px;
+  justify-content: center;
 }
 
-#qr-reader__camera_selection {
-  width: 100%;
-  max-width: 300px;
-  padding: 12px 16px !important;
-  font-size: 14px !important;
-  font-family: inherit;
-  color: #ffffff !important;
-  background-color: #1e1e1e !important;
-  border: 1px solid #3b82f6 !important;
-  border-radius: 12px !important;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233b82f6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-  transition: all 0.2s ease;
-  outline: none;
+#qr-reader button {
+  font-size: var(--font-main);
+  font-family: var(--font-display) !important;
+  text-transform: uppercase !important;
+  background: var(--primary-blue) !important;
+  color: #fff !important;
+  border: 0.3vmin solid #000 !important;
+  padding: 1vmin 2vmin !important;
+  margin: 1vmin !important;
+  cursor: pointer !important;
+  box-shadow: 0.4vmin 0.4vmin 0px #000 !important;
 }
 
-#qr-reader__camera_selection:hover {
-  border-color: #60a5fa !important;
-  box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+#qr-reader button:active {
+  transform: translate(0.2vmin, 0.2vmin);
+  box-shadow: 0px 0px 0px #000 !important;
 }
 
-#qr-reader__camera_selection:focus {
-  border-color: #2563eb !important;
-  background-color: #262626 !important;
-}
-
-#qr-reader__camera_selection option {
-  background-color: #1e1e1e;
-  color: white;
-  padding: 10px;
-}
-
-#qr-reader__dashboard_section_csr button {
-  background-color: #3b82f6 !important;
-  color: white !important;
-  border: none !important;
-  padding: 10px 20px !important;
-  border-radius: 8px !important;
-  cursor: pointer;
-  font-weight: bold;
-  margin: 10px 0;
-}
-
-#qr-reader__dashboard_section_csr > div > span {
-  display: none !important;
-}
-
-#qr-reader__dashboard_section_csr > div > a {
-  display: none !important;
-}
-
-#qr-reader__camera_permission_button {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
+b {
+  font-family: var(--font-main);
+  font-weight: 800;
+  font-size: 1.44vmin; 
+  text-align: center;
+  display: block;
+  margin-top: 1.5vmin;
+  background: #000;
+  color: #fff;
+  padding: 1vmin;
 }
 
 .status-box {
-  margin-top: 30px;
-  padding: 15px 25px;
-  background: var(--primary-color);
-  color: white;
-  border-radius: 12px;
-  border: 1px solid #333;
+  margin-top: 3vmin;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 2.4vmin;
+  text-transform: uppercase;
+  padding: 2vmin;
+  border: 0.3vmin dashed #000;
+  background: #fff;
 }
 
 .success-msg {
-  color: white;
-  font-weight: bold;
-  animation: pulse 1.5s infinite;
+  color: var(--primary-blue);
+  animation: blink 1s infinite;
 }
 
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: 480px) {
+  .qrscanner-title {
+    font-size: 10vmin;
+  }
+
+  #qr-reader{
+    width: 100%;
+  }
+
+  #qr-reader button{
+    font-size: 4.5vmin;
+  }
+
+  .scanner-wrapper{
+    width: auto;
+  }
+
+  .status-box{
+    font-size: 5.5vmin;
+  }
+
+  b{
+    font-size: 3vmin;
+  }
 }

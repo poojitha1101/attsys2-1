@@ -1,55 +1,118 @@
 .NavBar {
-  height: 3.5rem;
-  background-color: #4849e8;
-  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10vmin; 
+  min-height: 50px;
+  background-color: #fff;
+  border-bottom: 0.5vmin solid #000;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding-inline: 2.5rem;
+  align-items: center;
+  padding: 0 4vmin;
+  z-index: 1000;
 }
 
 .nav-logo {
+  font-family: var(--font-display);
+  font-size: 4.2vmin;
+  color: #fff;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: var(--primary-blue);
+  border: 0.3vmin solid #000;
+  padding: 0.5vmin 1.5vmin;
+  box-shadow: 0.5vmin 0.5vmin 0px #000;
+  transition: all 0.1s;
   user-select: none;
-  color: white;
-  text-decoration: none;
-  font-family: "Impact";
-  font-size: 1.5rem;
-  letter-spacing: 1px;
 }
 
-#nav-menu{
+.nav-logo:hover {
+  transform: translate(-0.2vmin, -0.2vmin);
+  box-shadow: 0.8vmin 0.8vmin 0px #000;
+}
+
+.NavBar img {
+  width: 6vmin;
+  height: 6vmin;
+  min-width: 40px;
+  min-height: 40px;
+  border: 0.3vmin solid #000;
+  border-radius: 50%;
+  background: #fff;
+  transition: all 0.1s;
+  box-shadow: 0.4vmin 0.4vmin 0px #000;
+}
+
+#nav-menu {
   position: absolute;
-  top: 3.75rem;
-  right: .25rem;
-  padding: 1rem;
-  height: 20vmin;
+  top: 11vmin;
+  right: 4vmin;
+  background: #fff;
+  border: 0.4vmin solid #000;
+  box-shadow: 1vmin 1vmin 0px #000;
+  padding: 2.5vmin;
+  min-width: 25vmin;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  width: 18vmin;
-  background-color: var(--primary-color);
-  border-radius: 2vmin;
-  font-family: 'Lilita One';
-  font-size: 2.5vmin;
-  text-align: center;
-  z-index: 2;
+  gap: 1.5vmin;
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.NavBar #logout {
-  height: 5vmin;
-  font-size: 2.5vmin;
-  padding: 0.5vmin 1.25vmin;
-  border: none;
+#nav-menu p {
+  font-family: var(--font-display);
+  font-size: 2vmin;
+  color: #000;
+  border-bottom: 0.2vmin solid #000;
+  padding-bottom: 0.5vmin;
+  text-transform: uppercase;
 }
 
-@media (max-width: 720px){
-  #nav-menu{
-    width: 20vmin;
-    font-size: 3.5vmin;
+#logout {
+  font-family: var(--font-display);
+  font-size: 1.8vmin;
+  text-transform: uppercase;
+  background: #ef4444;
+  color: #fff;
+  border: 0.3vmin solid #000;
+  padding: 1vmin;
+  cursor: pointer;
+  box-shadow: 0.4vmin 0.4vmin 0px #000;
+}
+
+@media (max-width: 60vmin) or (orientation: portrait) {
+  .NavBar {
+    height: 12vmin;
+    padding: 0 5vmin;
   }
 
-  .NavBar #logout{
-    height: 7vmin;
-    font-size: 3.5vmin;
+  .nav-logo {
+    font-size: 5vmin;
+    padding: 1.5vmin 3vmin;
+  }
+
+  .NavBar img {
+    width: 9vmin;
+    height: 9vmin;
+  }
+
+  #nav-menu {
+    top: 14vmin;
+    right: 5vmin;
+    width: calc(100% - 10vmin);
+    padding: 6vmin;
+    gap: 4vmin;
+  }
+
+  #nav-menu p {
+    font-size: 6vmin;
+    border-bottom-width: 0.4vmin;
+  }
+
+  #logout {
+    font-size: 5.5vmin;
+    padding: 4vmin;
+    box-shadow: 1vmin 1vmin 0px #000;
   }
 }

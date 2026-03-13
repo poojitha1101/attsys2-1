@@ -1,5 +1,77 @@
-.App{
-  height: 100dvh;
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(1vmin);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.TeacherDash,
+.AttendancePage,
+.StudentDash,
+.qrscanner-container {
+  padding: 4vmin;
+  max-width: 120vmin;
+  margin: 0 auto;
   width: 100%;
-  background-color: white;
+  animation: fadeIn 0.4s ease-out;
+  box-sizing: border-box;
+  padding-top: 14vmin !important; 
+}
+
+@media (max-width: 60vmin) or (orientation: portrait) {
+  .TeacherDash,
+  .AttendancePage,
+  .StudentDash,
+  .qrscanner-container {
+    padding: 5vmin;
+    max-width: 100%;
+    
+    padding-top: 18vmin !important;
+  }
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.LoginPage,
+.SignUp {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-gradient);
+}
+
+.loading-screen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-blue);
+  font-family: var(--font-display);
+  font-size: 5vmin;
+  font-weight: 800;
+  text-transform: uppercase;
 }

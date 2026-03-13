@@ -55,11 +55,11 @@ const OnBoarding = ({ type }) => {
       ...(type === "student"
         ? { usn, sections: [studentSection] }
         : {
-          courses: courseLoads.map((c) => ({
-            subject: c.subject,
-            sections: c.sections.trim().split(/\s+/),
-          })),
-        }),
+            courses: courseLoads.map((c) => ({
+              subject: c.subject,
+              sections: c.sections.trim().split(/\s+/),
+            })),
+          }),
     };
 
     try {
@@ -97,13 +97,13 @@ const OnBoarding = ({ type }) => {
 
   return (
     <div className="Form blue-background">
+      <Link className="logo" to="/">
+        ATTSYS2-0
+      </Link>
       <div className="greetings">
         <h1>Welcome on Board</h1>
         <p>To get started, Please fill in your personal information.</p>
       </div>
-      <Link className="logo" to="/">
-        ATTSYS2-0
-      </Link>
 
       <form className="form personal-info" onSubmit={handleSubmit}>
         <h1>Personal Info</h1>
@@ -141,17 +141,14 @@ const OnBoarding = ({ type }) => {
                 type="number"
                 min="1"
                 max="10"
-                  placeholder="How many subjects are you handling (e.g. 2)"
+                placeholder="How many subjects are you handling (e.g. 2)"
                 value={subjectCount}
                 onChange={handleSubjectCountChange}
               />
 
               <div className="dynamic-inputs">
                 {courseLoads.map((course, index) => (
-                  <div
-                    key={index}
-                    className="course-row"
-                  >
+                  <div key={index} className="course-row">
                     <input
                       placeholder={`Subject ${index + 1}`}
                       required
@@ -159,6 +156,7 @@ const OnBoarding = ({ type }) => {
                       onChange={(e) =>
                         handleCourseChange(index, "subject", e.target.value)
                       }
+                      key={index+"1"}
                     />
                     <input
                       placeholder="Sections (e.g. A B C)"
@@ -167,6 +165,7 @@ const OnBoarding = ({ type }) => {
                       onChange={(e) =>
                         handleCourseChange(index, "sections", e.target.value)
                       }
+                      key={index+"2"}
                     />
                   </div>
                 ))}

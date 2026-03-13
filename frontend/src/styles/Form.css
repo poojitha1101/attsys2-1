@@ -1,88 +1,180 @@
-.logo{
+.Form.blue-background {
+  background-color: var(--primary-blue);
+  background-image: radial-gradient(#000 0.2vmin, transparent 0.2vmin);
+  background-size: 4vmin 4vmin;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14vmin 2vmin; 
+  min-height: 100vh;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.Form .logo {
+  font-family: var(--font-display);
+  font-size: 4.8vmin;
+  color: #fff;
   text-decoration: none;
-  position: absolute;
-  top:0;
-  left: 5dvw;
-  transform: translateY(-50%);
-  background: white;
-  color: var(--primary-color);
-  font-size: 2rem;
-  font-family: 'Impact';
-  border-radius: 1rem;
-  padding-inline:1rem;
+  text-transform: uppercase;
+  -webkit-text-stroke: 0.15vmin #000;
+  text-shadow: 0.4vmin 0.4vmin 0px #000;
+  margin-bottom: 3vmin;
+  transition: transform 0.2s ease;
 }
 
-#blur-one.form-blur{
-  top: 0%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-#blur-two.form-blur{
-  bottom: 10%;
-  right: 0%;
-}
-
-.Form {
-  color: white;
-  text-align: center;
-  place-items: center;
+.Form .logo:hover {
+  transform: rotate(-3deg) scale(1.05);
 }
 
 .form {
-  font-family: "Lilita One";
-  height: 75%;
+  background: #fff;
+  border: 0.4vmin solid #000;
+  box-shadow: 1.2vmin 1.2vmin 0px #000;
+  padding: 4vmin;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  gap: 1.5rem;
+  max-width: 48vmin;
+  box-sizing: border-box;
 }
 
 .form h1 {
-  font-size: 4.5rem;
-  font-weight: bold;
+  font-family: var(--font-display);
+  font-size: 4.8vmin;
+  color: #000;
+  text-transform: uppercase;
+  margin-bottom: 2.5vmin;
+  border-bottom: 0.4vmin solid #000;
+  padding-bottom: 1vmin;
+  line-height: 0.9;
 }
 
-.form .input-holder {
-  width: 100%;
+.input-holder {
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.5vmin;
+  margin-bottom: 2.5vmin;
 }
 
-.form input {
-  height: 2vmin;
-  width: 60vmin;
-  font-family: 'Lilita One';
-  font-size: 1rem;
-  background-color: white;
-  color: var(--primary-color);
-  text-align: center;
-  padding: 0.75rem;
-  border: 4px solid #c1ff72;
-  border-radius: 2rem;
+.input-holder input {
+  font-family: var(--font-main);
+  font-weight: 700;
+  border: 0.3vmin solid #000;
+  border-radius: 0;
+  padding: 1.5vmin;
+  background: #fff;
+  font-size: 1.6vmin;
+  transition: all 0.1s;
+}
+
+.input-holder input:focus {
+  transform: translate(-0.3vmin, -0.3vmin);
+  box-shadow: 0.6vmin 0.6vmin 0px var(--primary-blue);
+  outline: none;
 }
 
 .form .button-holder {
-  width: 60vmin;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2vmin;
+  margin-bottom: 2.5vmin;
 }
 
-.form button{
-  max-height: 45px;
-  background-color: grey;
-  color: white;
-  padding: 0.75rem 5vmin;
-  font-size:large;
-  border:none;
+.form .button-holder button {
+  font-family: var(--font-display);
+  font-size: 2.4vmin;
+  text-transform: uppercase;
+  padding: 1.5vmin;
+  border: 0.3vmin solid #000;
+  cursor: pointer;
+  transition: all 0.1s;
 }
 
-.form button:nth-child(2n){
-  background-color: lime;
-  color: white;
+.form .button-holder button[type="reset"] {
+  background: #ef4444;
+  color: #fff;
+  box-shadow: 0.5vmin 0.5vmin 0px #000;
+}
+
+.form .button-holder button[type="submit"] {
+  background: #22c55e;
+  color: #000;
+  box-shadow: 0.5vmin 0.5vmin 0px #000;
+}
+
+.form p {
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 1.5vmin;
+  text-align: center;
+  color: #000;
+}
+
+.form p a {
+  background: #ffde03;
+  padding: 0.2vmin 0.8vmin;
+  border: 0.2vmin solid #000;
+}
+
+@media (max-width: 60vmin) or (orientation: portrait) {
+  .Form.blue-background {
+    padding: 2vmin;
+    justify-content: flex-start;
+    padding-top: 10vmin;
+  }
+
+  .form {
+    max-width: 92vmin;
+    min-height: 70vh;
+    padding: 8vmin 6vmin;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 1.5vmin 1.5vmin 0px #000;
+  }
+
+  .form h1 {
+    font-size: 9vmin; 
+    margin-bottom: 5vmin;
+    border-bottom-width: 0.6vmin;
+  }
+
+  .input-holder {
+    gap: 3vmin;
+    margin-bottom: 5vmin;
+  }
+
+  .input-holder input {
+    font-size: 5vmin;
+    padding: 4.5vmin;
+    border-width: 0.4vmin;
+  }
+
+  .form .button-holder {
+    grid-template-columns: 1fr;
+    gap: 3vmin;
+    margin-bottom: 5vmin;
+  }
+
+  .form .button-holder button {
+    font-size: 6vmin;
+    padding: 4.5vmin;
+    border-width: 0.4vmin;
+  }
+
+  .form p {
+    font-size: 4.5vmin;
+    line-height: 1.5;
+  }
+
+  .form p a {
+    padding: 0.5vmin 1.5vmin;
+    margin-top: 2vmin;
+    border-width: 0.3vmin;
+  }
+
+  .Form .logo {
+    font-size: 10vmin;
+    margin-bottom: 8vmin;
+  }
 }

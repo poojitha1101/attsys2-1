@@ -65,22 +65,35 @@ router.get("/list/:teacherId/:subject/:section", async (req, res) => {
   try {
     const { teacherId, subject, section } = req.params;
 
-    const records = await Attendance.find({ 
+    const allStudents = await User.find({ sections: section });
+
+    const todayStart = new Date().setHours(0, 0, 0, 0);
+    const attendanceRecords = await Attendance.find({ 
       teacherId, 
       subject, 
-      section,
-      date: { $gte: new Date().setHours(0, 0, 0, 0) } 
-    })
-    .sort({ usn: 1 });
+      section, 
+      date: { $gte: new Date(todayStart) } 
+    });
 
-    const formattedData = records.map((rec, index) => ({
+    const presentUSNs = new Set(attendanceRecords.map(rec => rec.usn));
+
+    let combinedData = allStudents.map((student) => {
+      const isPresent = presentUSNs.has(student.usn);
+      return {
+        Name: student.name || "N/A",
+        USN: student.usn || "N/A",
+        Status: isPresent ? "Present" : "Absent"
+      };
+    });
+
+    combinedData.sort((a, b) => a.Status.localeCompare(b.Status));
+
+    const finalFormattedData = combinedData.map((item, index) => ({
       Sno: (index + 1).toString().padStart(2, '0'),
-      Name: rec.studentName || "N/A", 
-      USN: rec.usn || "N/A", 
-      Status: rec.status || "Present"
+      ...item
     }));
 
-    res.status(200).json(formattedData);
+    res.status(200).json(finalFormattedData);
   } catch (err) {
     console.error("Fetch List Error:", err);
     res.status(500).json({ error: "Failed to fetch list" });

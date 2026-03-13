@@ -1,43 +1,82 @@
 .table-container {
   width: 100%;
-  max-height: 60dvh;
-  font-family: "Lilita One";
-  overflow-y: scroll;
-  scrollbar-width: none;
-  border-top: 2.5px solid black;
-  border-bottom: 2.5px solid black;
+  overflow-x: auto;
+  border: 0.4vmin solid #000;
+  box-shadow: 1vmin 1vmin 0px #000;
+  background: #fff;
+  margin-bottom: 2vmin;
+  -webkit-overflow-scrolling: touch; 
 }
 
-.dynamic-table {
+table {
   width: 100%;
   border-collapse: collapse;
+  font-family: var(--font-main);
+  background: #fff;
+  min-width: 500px; 
 }
 
-.dynamic-table th,
-.dynamic-table td {
-  border: 2.5px solid black;
-  border-top: none;
-  padding: 0.5rem;
-  text-align: center;
+thead {
+  background-color: #000;
+  color: #fff;
 }
 
-.dynamic-table tr:last-child td{
-  border-bottom: none;
+th {
+  font-family: var(--font-display);
+  font-size: 2.92vmin;
+  text-transform: uppercase;
+  letter-spacing: 0.1vmin;
+  padding: 1.5vmin;
+  text-align: left;
+  border-bottom: 0.4vmin solid #000;
+  white-space: nowrap;
 }
 
-.dynamic-table th {
-  background-color: var(--primary-color);
-  color: white;
+td {
+  padding: 1.5vmin;
+  border-bottom: 0.2vmin solid #000;
+  font-weight: 700;
+  font-size: 1.6vmin;
+  color: #000;
+  white-space: nowrap;
 }
 
-.dynamic-table td.sno{
-  width: 2.5rem;
+tbody tr:nth-child(even) {
+  background-color: #f1f5f9;
 }
 
-.dynamic-table td.usn{
-  max-width: 8rem;
+tbody tr:hover {
+  background-color: #ffde03;
+  cursor: default;
 }
 
-.dynamic-table td.status{
-  width: 5rem;
+.status-present {
+  color: #22c55e;
+  text-transform: uppercase;
+  font-family: var(--font-display);
+}
+
+.table-container::-webkit-scrollbar {
+  height: 0.8vmin;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #000;
+  border-radius: 0;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #fff;
+  border-top: 0.2vmin solid #000;
+}
+
+@media (max-width: 90vmin) {
+  th {
+    font-size: 3vmin;
+    padding: 2vmin;
+  }
+  td {
+    font-size: 2.5vmin;
+    padding: 2vmin;
+  }
 }
