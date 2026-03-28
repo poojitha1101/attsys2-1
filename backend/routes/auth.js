@@ -79,13 +79,14 @@ router.post("/register", async (req, res) => {
 
 router.patch("/onboarding/:id", async (req, res) => {
   try {
-    const { name, usn, sections, courses } = req.body;
+    const { name, branch, usn, sections, courses } = req.body;
 
     const updateData = {
       name,
       isOnboarded: true,
     };
 
+    if (branch) updateData.branch = branch;
     if (usn) updateData.usn = usn;
     if (sections) updateData.sections = sections;
 
@@ -112,7 +113,7 @@ router.get("/profile/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const user = await User.findById(id).select("name role email usn sections courses");
+    const user = await User.findById(id).select("name role email usn sections branch courses");
 
     if (!user) {
       return res.status(404).json({ error: "User profile not found" });

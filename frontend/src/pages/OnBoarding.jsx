@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 const OnBoarding = ({ type }) => {
   const [name, setName] = useState("");
+  const [branch, setBranch] = useState("CSE");
   const [usn, setUsn] = useState("");
   const [subjectCount, setSubjectCount] = useState(null);
   const [courseLoads, setCourseLoads] = useState([
@@ -53,20 +54,21 @@ const OnBoarding = ({ type }) => {
 
     const payload = {
       name,
+      branch,
       ...(type === "student"
         ? { usn, sections: [studentSection] }
         : {
-            courses: courseLoads.map((c) => ({
-              subject: c.subject,
-              sections: c.sections.trim().split(/\s+/),
-            })),
-          }),
+          courses: courseLoads.map((c) => ({
+            subject: c.subject,
+            sections: c.sections.trim().split(/\s+/),
+          })),
+        }),
     };
 
     try {
-          const API_BASE_URL = import.meta.env.VITE_PORT
-            ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
-            : import.meta.env.VITE_URL;
+      const API_BASE_URL = import.meta.env.VITE_PORT
+        ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
+        : import.meta.env.VITE_URL;
       const response = await fetch(
         `${API_BASE_URL}/api/onboarding/${idToUpdate}`,
         {
@@ -100,7 +102,7 @@ const OnBoarding = ({ type }) => {
   }
 
   return (
-    <div className="Form blue-background">
+    <div className="Form">
       <Link className="logo" to="/">
         ATTSYS2-0
       </Link>
@@ -119,6 +121,19 @@ const OnBoarding = ({ type }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+
+          <select
+            className="form-select"
+            required
+            value={branch}
+            onChange={(e) => setBranch(e.target.value)}
+          >
+            <option value="CSE">Computer Science</option>
+            <option value="ECE">Electronics & Communication</option>
+            <option value="ME">Mechanical Engineering</option>
+            <option value="CE">Civil Engineering</option>
+            <option value="ISE">Information Science</option>
+          </select>
 
           {type === "student" ? (
             <>
@@ -160,7 +175,7 @@ const OnBoarding = ({ type }) => {
                       onChange={(e) =>
                         handleCourseChange(index, "subject", e.target.value)
                       }
-                      key={index+"1"}
+                      key={index + "1"}
                     />
                     <input
                       placeholder="Sections (e.g. A B C)"
@@ -169,7 +184,7 @@ const OnBoarding = ({ type }) => {
                       onChange={(e) =>
                         handleCourseChange(index, "sections", e.target.value)
                       }
-                      key={index+"2"}
+                      key={index + "2"}
                     />
                   </div>
                 ))}
@@ -178,7 +193,7 @@ const OnBoarding = ({ type }) => {
           )}
         </div>
 
-        <div className="button-holder">
+        <div className="form-controls">
           <button type="button" onClick={() => window.location.reload()}>
             Clear
           </button>

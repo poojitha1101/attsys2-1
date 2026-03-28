@@ -6,18 +6,19 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ["student", "teacher"], required: true },
   name: { type: String },
+  branch: { type: String },
   isOnboarded: { type: Boolean, default: false },
-  usn: { type: String }, 
+  usn: { type: String },
   sections: [{ type: String }],
   courses: [
     {
       subject: { type: String },
-      sections: [{ type: String }]
-    }
-  ]
+      sections: [{ type: String }],
+    },
+  ],
 });
 
-UserSchema.pre("save", async function () {
+UserSchema.pre("save", async function() {
   if (!this.isModified("password")) return;
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);

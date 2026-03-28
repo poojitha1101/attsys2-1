@@ -1,81 +1,86 @@
 .table-container {
   width: 100%;
-  overflow-x: auto;
-  border: 0.4vmin solid #000;
-  box-shadow: 1vmin 1vmin 0px #000;
-  background: #fff;
-  margin-bottom: 2vmin;
-  -webkit-overflow-scrolling: touch; 
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: var(--font-main);
-  background: #fff;
-  min-width: 500px; 
-}
-
-thead {
-  background-color: #000;
-  color: #fff;
-}
-
-th {
-  font-family: var(--font-display);
-  font-size: 2.92vmin;
-  text-transform: uppercase;
-  letter-spacing: 0.1vmin;
-  padding: 1.5vmin;
-  text-align: left;
-  border-bottom: 0.4vmin solid #000;
-  white-space: nowrap;
-}
-
-td {
-  padding: 1.5vmin;
-  border-bottom: 0.2vmin solid #000;
-  font-weight: 700;
-  font-size: 1.6vmin;
-  white-space: nowrap;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #f1f5f9;
-}
-
-tbody tr:hover {
-  background-color: #ffde03;
-  cursor: default;
-}
-
-.status-present {
-  color: #22c55e;
-  text-transform: uppercase;
-  font-family: var(--font-display);
+  max-height: 60vh;
+  overflow-y: auto;
+  border-radius: 1.5vmin;
+  background: rgba(255, 255, 255, 0.02);
+  border: 0.1vmin solid rgba(255, 255, 255, 0.05);
+  scrollbar-width: thin;
+  scrollbar-color: #00fff2 rgba(255, 255, 255, 0.05);
 }
 
 .table-container::-webkit-scrollbar {
-  height: 0.8vmin;
+  width: 0.6vmin;
 }
 
 .table-container::-webkit-scrollbar-thumb {
-  background: #000;
-  border-radius: 0;
+  background: #00fff2;
+  border-radius: 1vmin;
 }
 
-.table-container::-webkit-scrollbar-track {
-  background: #fff;
-  border-top: 0.2vmin solid #000;
+.dynamic-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 2vmin;
+  text-align: left;
 }
 
-@media (max-width: 90vmin) {
-  th {
-    font-size: 3vmin;
-    padding: 2vmin;
+.dynamic-table thead {
+  position: sticky;
+  top: 0;
+  background: #121212;
+  z-index: 10;
+}
+
+.dynamic-table th {
+  padding: 2vmin;
+  color: #00fff2;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1vmin;
+  border-bottom: 0.2vmin solid rgba(0, 255, 242, 0.2);
+}
+
+.dynamic-table td {
+  padding: 1.8vmin 2vmin;
+  border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease;
+  text-align: left;
+}
+
+.dynamic-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sno {
+  width: 5vmin;
+  color: #8892b0;
+}
+
+.name {
+  font-weight: 600;
+}
+
+.usn {
+  font-family: 'Courier New', Courier, monospace;
+  color: #ccd6f6;
+}
+
+.status {
+  font-weight: 700;
+  text-align: right;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .dynamic-table {
+    font-size: 3.5vmin;
   }
-  td {
-    font-size: 2.5vmin;
-    padding: 2vmin;
+  
+  .table-container {
+    max-height: 50vh;
+  }
+
+  .dynamic-table th, .dynamic-table td {
+    padding: 3vmin;
   }
 }

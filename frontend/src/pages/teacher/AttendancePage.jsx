@@ -13,7 +13,7 @@ const AttendancePage = () => {
     ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
     : import.meta.env.VITE_URL;
   const { user } = useAuth();
-  const { subject: subjectName, sectionName } = useParams();
+  const { branch, subject: subjectName, sectionName } = useParams();
 
   const [qr, setQr] = useState(null);
   const [attendanceList, setAttendanceList] = useState([]);
@@ -26,7 +26,7 @@ const AttendancePage = () => {
       if (user?.role === "teacher" && user?.id && sectionName && subjectName) {
         try {
           const response = await fetch(
-            `${API_BASE_URL}/api/attendance/list/${user.id}/${subjectName}/${sectionName}`,
+            `${API_BASE_URL}/api/attendance/list/${user.id}/${branch}/${subjectName}/${sectionName}`,
           );
           if (response.ok) {
             const data = await response.json();
@@ -41,13 +41,13 @@ const AttendancePage = () => {
     const interval = setInterval(fetchAttendance, 5000);
     fetchAttendance();
     return () => clearInterval(interval);
-  }, [user, sectionName, subjectName, API_BASE_URL]);
+  }, [user, branch, sectionName, subjectName, API_BASE_URL]);
 
   const generateQR = () => {
     if (timerIdRef.current) clearInterval(timerIdRef.current);
 
     const baseUrl = `${API_BASE_URL}/qr`;
-    const params = `teacherId=${user.id}&subject=${subjectName}&section=${sectionName}&time=${Date.now()}`;
+    const params = `teacherId=${user.id}&branch=${branch}&subject=${subjectName}&section=${sectionName}&time=${Date.now()}`;
 
     setQr(`${baseUrl}?${params}`);
     setTimeLeft(10);

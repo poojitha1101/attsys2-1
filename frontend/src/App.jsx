@@ -64,7 +64,7 @@ const App = () => {
         }
       />
       <Route
-        path="/attendance/:subject/:sectionName"
+        path="/attendance/:branch/:subject/:sectionName"
         element={
           <ProtectedRoute>
             <NavBar />

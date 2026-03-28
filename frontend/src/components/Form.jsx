@@ -59,67 +59,61 @@ const Form = ({ formType, type }) => {
   };
 
   return (
-    <>
-      <div className="form-blur" id="blur-one"></div>
-      <div className="form-blur" id="blur-two"></div>
-      <div className="Form blue-background">
+    <div className="Form">
+      <form className="form" onSubmit={handleSubmit}>
         <Link className="logo" to="/">
           ATTSYS2-0
         </Link>
-        <form className="form" onSubmit={handleSubmit}>
-          <h1>{formType}</h1>
-          <div className="input-holder">
-            <input
-              placeholder="Mail ID"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              placeholder="Password"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="button-holder">
-            <button
-              type="reset"
-              onClick={() => {
-                setEmail("");
-                setPassword("");
-              }}
+        <h1>{formType}</h1>
+        <div className="input-holder">
+          <input
+            placeholder="Mail ID"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            placeholder="Password"
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="form-controls">
+          <button
+            type="reset"
+            onClick={() => {
+              setEmail("");
+              setPassword("");
+            }}
+          >
+            Clear
+          </button>
+          <button type="submit">{formType}</button>
+        </div>
+        {formType == "Log In" ? (
+          <p>
+            Don't have an account? Click{" "}
+            <Link
+              to={type == "teacher" ? "/signup/teacher" : "/signup/student"}
             >
-              Clear
-            </button>
-            <button type="submit">{formType}</button>
-          </div>
-          {formType == "Log In" ? (
-            <p>
-              Don't have an account? Click{" "}
-              <Link
-                to={type == "teacher" ? "/signup/teacher" : "/signup/student"}
-              >
-                here
-              </Link>{" "}
-              to signup
-            </p>
-          ) : (
-            <p>
-              Already have an account? Click{" "}
-              <Link
-                to={type == "teacher" ? "/login/teacher" : "/login/student"}
-              >
-                here
-              </Link>{" "}
-              to login
-            </p>
-          )}
-        </form>
-      </div>
-    </>
+              here
+            </Link>{" "}
+            to signup
+          </p>
+        ) : (
+          <p>
+            Already have an account? Click{" "}
+            <Link to={type == "teacher" ? "/login/teacher" : "/login/student"}>
+              here
+            </Link>{" "}
+            to login
+          </p>
+        )}
+      </form>
+    </div>
   );
 };
 

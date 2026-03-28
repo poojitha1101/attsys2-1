@@ -6,37 +6,47 @@ import User from "../models/User.js";
 const router = express.Router();
 
 router.post("/verify", async (req, res) => {
-  const { passkey, studentId } = req.body;
+  const { passkey, studentId, branch, subject, section } = req.body;
 
   try {
-    const activeSession = await Session.findOne({ passkey });
+    const activeSession = await Session.findOne({ 
+      passkey, 
+      branch, 
+      subject, 
+      section 
+    });
+
     if (!activeSession) {
-      return res.status(400).json({ error: "Invalid or expired QR code" });
+      return res.status(400).json({ error: "Invalid QR code or context mismatch" });
     }
 
-    if(new Date() > activeSession.expiresAt) {
+    if (new Date() > activeSession.expiresAt) {
       return res.status(410).json({ error: "QR Code has expired!" });
     }
 
     const student = await User.findById(studentId);
     if (!student) {
-      return res.status(404).json({ message: "Student not found" });
+      return res.status(404).json({ error: "Student profile not found" });
     }
 
-    const isCorrectSection = student.sections.includes(activeSession.section);
-    if (!isCorrectSection) {
+    const isCorrectBranch = student.branch === branch;
+    const isCorrectSection = student.sections.includes(section);
+
+    if (!isCorrectBranch || !isCorrectSection) {
       return res.status(403).json({
-        error: `Access denied: This QR is for section ${activeSession.section}.`
+        error: `Access denied: You belong to ${student.branch}-${student.sections.join(', ')}, but this QR is for ${branch}-${section}.`
       });
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
 
     const alreadyMarked = await Attendance.findOne({
       studentId,
-      subject: activeSession.subject, 
-      date: { $gte: today }
+      subject, 
+      date: { $gte: todayStart, $lte: todayEnd }
     });
 
     if (alreadyMarked) {
@@ -48,28 +58,31 @@ router.post("/verify", async (req, res) => {
       usn: student.usn,        
       studentName: student.name,
       teacherId: activeSession.teacherId,
-      subject: activeSession.subject, 
-      section: activeSession.section,
+      subject, 
+      section,
+      branch,
       status: "Present",
       date: new Date()
     });
 
     res.status(200).json({ message: "Attendance marked successfully!" });
+
   } catch (err) {
     console.error("VERIFY ERROR:", err);
-    res.status(500).json({ error: "Database error", details: err.message });
+    res.status(500).json({ error: "Server error during verification" });
   }
 });
 
-router.get("/list/:teacherId/:subject/:section", async (req, res) => {
+router.get("/list/:teacherId/:branch/:subject/:section", async (req, res) => {
   try {
-    const { teacherId, subject, section } = req.params;
+    const { teacherId, branch, subject, section } = req.params;
 
-    const allStudents = await User.find({ sections: section });
+    const allStudents = await User.find({ sections: section, branch });
 
     const todayStart = new Date().setHours(0, 0, 0, 0);
     const attendanceRecords = await Attendance.find({ 
       teacherId, 
+      branch,
       subject, 
       section, 
       date: { $gte: new Date(todayStart) } 
@@ -86,13 +99,10 @@ router.get("/list/:teacherId/:subject/:section", async (req, res) => {
       };
     });
 
-    // --- SORTING LOGIC CHANGED HERE ---
-    // Sort by USN alphabetically/numerically
     combinedData.sort((a, b) => a.USN.localeCompare(b.USN, undefined, {
-      numeric: true,      // Handles 10 being after 2
-      sensitivity: 'base' // Ignores case
+      numeric: true,
+      sensitivity: 'base'
     }));
-    // ----------------------------------
 
     const finalFormattedData = combinedData.map((item, index) => ({
       Sno: (index + 1).toString().padStart(2, '0'),

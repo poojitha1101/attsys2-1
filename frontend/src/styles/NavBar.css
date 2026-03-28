@@ -1,118 +1,136 @@
 .NavBar {
+  width: 100%;
+  height: 8vmin;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6vmin;
+  background: rgba(10, 10, 18, 0.85);
+  backdrop-filter: blur(1.5vmin);
+  border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.1);
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 10vmin; 
-  min-height: 50px;
-  background-color: #fff;
-  border-bottom: 0.5vmin solid #000;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 4vmin;
   z-index: 1000;
+  box-sizing: border-box;
 }
 
 .nav-logo {
-  font-family: var(--font-display);
-  font-size: 4.2vmin;
-  color: #fff;
-  text-transform: uppercase;
+  font-size: 3.5vmin;
+  font-weight: 800;
+  letter-spacing: 0.2vmin;
   cursor: pointer;
-  background: var(--primary-blue);
-  border: 0.3vmin solid #000;
-  padding: 0.5vmin 1.5vmin;
-  box-shadow: 0.5vmin 0.5vmin 0px #000;
-  transition: all 0.1s;
+  background: linear-gradient(135deg, #00fff2, #0072ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
   user-select: none;
 }
 
-.nav-logo:hover {
-  transform: translate(-0.2vmin, -0.2vmin);
-  box-shadow: 0.8vmin 0.8vmin 0px #000;
+.profile-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
-.NavBar img {
-  width: 6vmin;
-  height: 6vmin;
-  min-width: 40px;
-  min-height: 40px;
-  border: 0.3vmin solid #000;
+.profile-wrapper img {
+  width: 5vmin;
+  height: 5vmin;
+  min-width: 28px;
+  min-height: 28px;
   border-radius: 50%;
-  background: #fff;
-  transition: all 0.1s;
-  box-shadow: 0.4vmin 0.4vmin 0px #000;
+  border: 0.2vmin solid rgba(0, 255, 242, 0.3);
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.profile-wrapper img:hover {
+  border-color: #00fff2;
+  box-shadow: 0 0 1.5vmin rgba(0, 255, 242, 0.4);
+  transform: scale(1.1);
 }
 
 #nav-menu {
   position: absolute;
-  top: 11vmin;
-  right: -1vmin;
-  background: #fff;
-  border: 0.4vmin solid #000;
-  box-shadow: 1vmin 1vmin 0px #000;
+  top: calc(100% + 1vmin);
+  right: 0;
+  background: rgba(15, 15, 25, 0.98);
+  backdrop-filter: blur(3vmin);
+  border: 0.1vmin solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5vmin;
   padding: 2.5vmin;
-  min-width: 25vmin;
+  min-width: 22vmin;
   display: flex;
   flex-direction: column;
   gap: 1.5vmin;
-  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 2vmin 5vmin rgba(0, 0, 0, 0.9);
+  animation: menuDrop 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
 }
 
 #nav-menu p {
-  font-family: var(--font-display);
-  font-size: 2vmin;
-  color: #000;
-  border-bottom: 0.2vmin solid #000;
-  padding-bottom: 0.5vmin;
-  text-transform: uppercase;
+  font-size: 1.8vmin;
+  color: #ffffff;
+  font-weight: 600;
+  margin: 0;
+  padding-bottom: 1vmin;
+  border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
 }
 
 #logout {
-  font-family: var(--font-display);
+  width: 100%;
+  padding: 1.2vmin;
+  background: rgba(255, 71, 71, 0.08);
+  border: 0.1vmin solid rgba(255, 71, 71, 0.2);
+  color: #ff4747;
+  border-radius: 0.8vmin;
   font-size: 1.8vmin;
-  text-transform: uppercase;
-  background: #ef4444;
-  color: #fff;
-  border: 0.3vmin solid #000;
-  padding: 1vmin;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0.4vmin 0.4vmin 0px #000;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
 }
 
-@media (max-width: 60vmin) or (orientation: portrait) {
+#logout:hover {
+  background: #ff4747;
+  color: #ffffff;
+  box-shadow: 0 0 2vmin rgba(255, 71, 71, 0.4);
+}
+
+@keyframes menuDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5vmin);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-aspect-ratio: 1/1) {
   .NavBar {
     height: 12vmin;
-    padding: 0 5vmin;
+    padding: 0 4vmin;
   }
 
   .nav-logo {
     font-size: 5vmin;
-    padding: 1.5vmin 3vmin;
   }
 
-  .NavBar img {
-    width: 9vmin;
-    height: 9vmin;
+  .profile-wrapper img {
+    width: 8vmin;
+    height: 8vmin;
   }
 
   #nav-menu {
-    top: 14vmin;
-    right: -1vmin;
-    width: max-content;
-    padding: 6vmin;
-    gap: 4vmin;
+    min-width: 40vmin;
+    padding: 4vmin;
   }
 
-  #nav-menu p {
-    font-size: 4vmin;
-    border-bottom-width: 0.4vmin;
-  }
-
-  #logout {
+  #nav-menu p, #logout {
     font-size: 3.5vmin;
-    padding: 2vmin;
-    box-shadow: 1vmin 1vmin 0px #000;
   }
 }

@@ -7,6 +7,7 @@ const TeacherDash = () => {
   const { id } = useParams();
   
   const [courses, setCourses] = useState([]);
+  const [branch, setBranch] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const TeacherDash = () => {
 
         if (response.ok) {
           setCourses(data.courses || []);
+          setBranch(data.branch);
         } else {
           console.error("Profile fetch error:", data.error);
         }
@@ -56,7 +58,7 @@ const TeacherDash = () => {
                       <button
                         key={secIndex}
                         className="attendance-btn"
-                        onClick={() => navigate(`/attendance/${course.subject}/${sec}`)}
+                        onClick={() => navigate(`/attendance/${branch}/${course.subject}/${sec}`)}
                       >
                         Section {sec}
                       </button>
