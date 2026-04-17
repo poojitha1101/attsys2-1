@@ -13,6 +13,7 @@ import TeacherDash from './pages/teacher/TeacherDash';
 import AttendancePage from './pages/teacher/AttendancePage';
 import StudentDash from './pages/student/StudentDash';
 import { Toaster } from 'react-hot-toast';
+import CreateAssignment from './pages/teacher/CreateAssignment';
 
 const App = () => {
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ const App = () => {
             '/login/teacher',
             '/signup/student',
             '/signup/teacher',
+            '/assignment'
         ];
 
         if (user?.token && user?.isOnboarded && publicPaths.includes(location.pathname)) {
@@ -41,6 +43,7 @@ const App = () => {
                 <Route path="/login/student" element={<LoginPage type="student" />} />
                 <Route path="/login/teacher" element={<LoginPage type="teacher" />} />
                 <Route path="/signup/student" element={<SignUp type="student" />} />
+                {/* <Route path="/teacher/:id/create-assignment" element={<CreateAssignment />} /> */}
                 <Route path="/signup/teacher" element={<SignUp type="teacher" />} />
                 <Route
                     path="/onboard/teacher"
@@ -85,9 +88,19 @@ const App = () => {
                         </ProtectedRoute>
                     }
                 />
+                <Route
+                    path="/teacher/:id/create-assignment"
+                    element={
+                        <ProtectedRoute>
+                            <NavBar />
+                            <CreateAssignment />
+                        </ProtectedRoute>
+                    }
+                />
             </Routes>
         </>
     );
 };
 
 export default App;
+
