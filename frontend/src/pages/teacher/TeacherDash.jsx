@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/teacher/TeacherDash.css';
 
@@ -18,12 +19,13 @@ const TeacherDash = () => {
                 const API_BASE_URL = import.meta.env.VITE_PORT
                     ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
                     : import.meta.env.VITE_URL;
+
                 const response = await fetch(`${API_BASE_URL}/api/profile/${id}`);
                 const data = await response.json();
 
                 if (response.ok) {
                     setCourses(data.courses || []);
-                    setBranch(data.branch);
+                    setBranch(data.branch || '');
                 } else {
                     console.error('Profile fetch error:', data.error);
                 }
@@ -37,18 +39,34 @@ const TeacherDash = () => {
         fetchUserProfile();
     }, [id]);
 
-    if (loading) return <div className="TeacherDash">Loading Dashboard...</div>;
+    const handleCreateAssignment = () => {
+        navigate(`/teacher/${id}/create-assignment`);
+    };
+
+    if (loading) {
+        return <div className="TeacherDash">Loading Dashboard...</div>;
+    }
 
     return (
         <div className="TeacherDash">
             <div className="dashboard-container">
-                <span className="dash-section">SUBJECTS</span>
+
+                {/* HEADER (NO CREATE BUTTON HERE ANYMORE) */}
+                <div className="dashboard-header">
+                    <div className="dashboard-title">
+                        <h1>Teacher Dashboard</h1>
+                    </div>
+                </div>
+
+                <span className="dash-section">TAKE ATTENDANCE</span>
 
                 <div className="subjects">
                     {courses.length > 0 ? (
                         courses.map((course, courseIndex) => (
                             <div className="subject" key={courseIndex}>
-                                <h2 className="subject-title">{course.subject}</h2>
+                                <h2 className="subject-title">
+                                    {course.subject}
+                                </h2>
 
                                 <div className="section-grid">
                                     {course.sections && course.sections.length > 0 ? (
@@ -58,7 +76,7 @@ const TeacherDash = () => {
                                                 className="attendance-btn"
                                                 onClick={() =>
                                                     navigate(
-                                                        `/attendance/${branch}/${course.subject}/${sec}/${course.semester}`,
+                                                        `/attendance/${branch}/${course.subject}/${sec}/${course.semester}`
                                                     )
                                                 }
                                             >
@@ -66,20 +84,35 @@ const TeacherDash = () => {
                                             </button>
                                         ))
                                     ) : (
-                                        <p>No sections assigned</p>
+                                        <p className="muted-text">
+                                            No sections assigned
+                                        </p>
                                     )}
                                 </div>
                             </div>
                         ))
                     ) : (
                         <div className="no-data">
-                            <p>No subjects found. Please complete your onboarding.</p>
+                            <p>
+                                No subjects found. Please complete onboarding.
+                            </p>
                         </div>
                     )}
                 </div>
+
+                {/* SINGLE CREATE ASSIGNMENT ENTRY POINT */}
+                <span className="dash-section">Assignment</span>
+
+                <Link to={`/teacher/${id}/create-assignment`}>
+                    <button type="button" className="attendance-btn">
+                        Create Assignment
+                    </button>
+                </Link>
+
             </div>
         </div>
     );
 };
 
 export default TeacherDash;
+
