@@ -23,7 +23,6 @@ const App = () => {
 
     useEffect(() => {
         const publicPaths = [
-            '/',
             '/login/student',
             '/login/teacher',
             '/signup/student',

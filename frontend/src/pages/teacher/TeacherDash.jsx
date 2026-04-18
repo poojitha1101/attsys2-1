@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import CreateAssignment from './CreateAssignment';
+import RiskAnalysis from "../../components/RiskAnalysis";
 import '../../styles/teacher/TeacherDash.css';
 
 const TeacherDash = () => {
@@ -103,6 +106,9 @@ const TeacherDash = () => {
                         View Attendance History
                     </button>
                 </Link>
+
+                <span className="dash-section">Risk Analysis</span>
+                <RiskAnalysis studentId={id} />
 
             </div>
         </div>

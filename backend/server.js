@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import attendanceRoutes from './routes/attendance.js';
 import qrRouter from './routes/qr.js';
+import riskRoutes from './routes/risk.js';
 
 dotenv.config();
 const app = express();
@@ -31,5 +32,6 @@ mongoose
 app.use('/', qrRouter);
 app.use('/api', authRoutes);
 app.use('/api/attendance', attendanceRoutes);
+app.use('/api/risk', riskRoutes);
 
 app.listen(PORT, HOST, () => console.log('🚀 Server running on port 5000'));
